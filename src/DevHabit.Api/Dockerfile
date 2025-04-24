@@ -6,6 +6,9 @@ EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
+COPY Directory.Build.props ./
+COPY .editorconfig ./
+COPY Directory.Packages.props ./
 WORKDIR /src
 COPY ["src/DevHabit.Api/DevHabit.Api.csproj", "src/DevHabit.Api/"]
 RUN dotnet restore "src/DevHabit.Api/DevHabit.Api.csproj"
