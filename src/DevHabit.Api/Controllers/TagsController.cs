@@ -8,7 +8,7 @@ namespace DevHabit.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TagsController(ApplicationDbContext dbContext) : ControllerBase
+public sealed class TagsController(ApplicationDbContext dbContext) : ControllerBase
 {
         [HttpGet]
         public async Task<ActionResult<TagsCollectionDto>> GetTags()

@@ -9,7 +9,7 @@ namespace DevHabit.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class HabitsController(ApplicationDbContext dbContext) : ControllerBase
+public sealed class HabitsController(ApplicationDbContext dbContext) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<HabitsCollectionDto>> GetHabits()
@@ -24,12 +24,12 @@ public class HabitsController(ApplicationDbContext dbContext) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<HabitDto>> GetHabit(string id)
+    public async Task<ActionResult<HabitWithTagsDto>> GetHabit(string id)
     {
-        HabitDto? habit = await dbContext
+        HabitWithTagsDto? habit = await dbContext
             .Habits
             .Where(h => h.Id == id)
-            .Select(HabitQueries.ProjectToDto())
+            .Select(HabitQueries.ProjectToHabitWithTagsDto())
             .FirstOrDefaultAsync();
 
         return habit is null ? NotFound() : Ok(habit);
