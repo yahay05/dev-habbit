@@ -3,8 +3,8 @@ using FluentValidation;
 
 namespace DevHabit.Api.DTOs.Habits;
 
-public class CreateHabitDtoValidator :  AbstractValidator<CreateHabitDto>
-{
+public class UpdateHabitDtoValidator : AbstractValidator<UpdateHabitDto>
+{ 
     private static readonly string[] AllowedUnits =
     [
         "minutes", "hours", "steps", "km", "cal",
@@ -12,7 +12,7 @@ public class CreateHabitDtoValidator :  AbstractValidator<CreateHabitDto>
     ];
     private static readonly string[] AllowedUnitsForBinaryHabits = ["sessions", "tasks"];
 
-    public CreateHabitDtoValidator()
+    public UpdateHabitDtoValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()
