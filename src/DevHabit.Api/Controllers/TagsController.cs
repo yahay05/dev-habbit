@@ -23,7 +23,7 @@ public sealed class TagsController(ApplicationDbContext dbContext) : ControllerB
     
             TagsCollectionDto tagsCllCollectionDto = new TagsCollectionDto
             {
-                Data = tags
+                Items = tags
             };
     
             return Ok(tagsCllCollectionDto);

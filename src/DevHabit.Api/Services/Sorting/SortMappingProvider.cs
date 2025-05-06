@@ -1,5 +1,4 @@
-namespace DevHabit.Api.Services;
-
+namespace DevHabit.Api.Services.Sorting;
 public sealed class SortMappingProvider(IEnumerable<ISortMappingDefinition> sortMappingDefinitions)
 {
     public SortMapping[] GetMappings<TSource, TDestination>()
