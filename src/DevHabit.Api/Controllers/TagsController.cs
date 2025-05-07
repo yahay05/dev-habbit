@@ -4,12 +4,15 @@ using DevHabit.Api.DTOs.Tags;
 using DevHabit.Api.Entities;
 using DevHabit.Api.Services;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mime;
 
 namespace DevHabit.Api.Controllers;
 
+
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 [Produces(

@@ -6,6 +6,7 @@ using DevHabit.Api.Entities;
 using DevHabit.Api.Services;
 using DevHabit.Api.Services.Sorting;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,8 @@ using System.Net.Mime;
 
 namespace DevHabit.Api.Controllers;
 
+
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 [ApiVersion(1.0)]
