@@ -6,7 +6,7 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder
-    .AddControllers()
+    .AddApiServices()
     .AddErrorHandling()
     .AddDatabase()
     .AddObservability()
