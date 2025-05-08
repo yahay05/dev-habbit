@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace DevHabit.Api.Services;
@@ -14,7 +15,7 @@ public sealed class TokenProvider(IOptions<JwtAuthOptions> options)
 
     public AccessTokensDto Create(TokenRequest tokenRequest)
     {
-        return new AccessTokensDto(GenerateAccessToken(tokenRequest), string.Empty);
+        return new AccessTokensDto(GenerateAccessToken(tokenRequest), GenerateRefreshToken());
     }
 
     private string GenerateAccessToken(TokenRequest tokenRequest)
@@ -43,8 +44,10 @@ public sealed class TokenProvider(IOptions<JwtAuthOptions> options)
         return accessToken;
     }
     
-    private string GenerateRefreshToken()
+    private static string GenerateRefreshToken()
     {
-        return string.Empty;
+        byte[] randomBytes = RandomNumberGenerator.GetBytes(32);
+
+        return Convert.ToBase64String(randomBytes);
     }
 }
