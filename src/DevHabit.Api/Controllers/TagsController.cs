@@ -12,7 +12,7 @@ using System.Net.Mime;
 namespace DevHabit.Api.Controllers;
 
 
-[Authorize]
+[Authorize(Roles = $"{Roles.Member}")]
 [ApiController]
 [Route("[controller]")]
 [Produces(

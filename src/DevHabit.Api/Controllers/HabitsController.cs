@@ -16,7 +16,7 @@ using System.Net.Mime;
 namespace DevHabit.Api.Controllers;
 
 
-[Authorize]
+[Authorize(Roles = $"{Roles.Member}")]
 [ApiController]
 [Route("[controller]")]
 [ApiVersion(1.0)]

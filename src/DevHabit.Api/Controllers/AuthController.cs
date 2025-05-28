@@ -54,15 +54,32 @@ public sealed class AuthController(
                 statusCode: StatusCodes.Status400BadRequest,
                 extensions:  extensions);
         }
+
+        IdentityResult addToRoleResult = await userManager.AddToRoleAsync(identityUser, Roles.Member);
+        
+        if (!addToRoleResult.Succeeded)
+        {
+            Dictionary<string, object?> extensions = new Dictionary<string, object?> 
+            {
+                
+                {   "errors",
+                    addToRoleResult.Errors.ToDictionary(e => e.Code, e => e.Description)
+                }
+            };
+            return Problem(
+                detail: "Unable to register user, please try again.",
+                statusCode: StatusCodes.Status400BadRequest,
+                extensions:  extensions);
+        }
+        
         // Create App user
         User user = registerUserDto.ToEntity();
         user.IdentityId = identityUser.Id;
         applicationDbContext.Users.Add(user);
         await applicationDbContext.SaveChangesAsync();
-
         
-
-        TokenRequest tokenRequest = new TokenRequest(identityUser.Id, identityUser.Email!);
+        
+        TokenRequest tokenRequest = new TokenRequest(identityUser.Id, identityUser.Email!, [Roles.Member]);
         AccessTokensDto accessTokens = tokenProvider.Create(tokenRequest);
 
         var refreshToken = new RefreshToken
@@ -90,8 +107,10 @@ public sealed class AuthController(
         {
                 return Unauthorized();
         }
-
-        TokenRequest tokenRequest = new TokenRequest(identityUser.Id, identityUser.Email!);
+        
+        IList<string> roles = await userManager.GetRolesAsync(identityUser);
+        
+        TokenRequest tokenRequest = new TokenRequest(identityUser.Id, identityUser.Email!, roles);
         AccessTokensDto accessTokens = tokenProvider.Create(tokenRequest);
         
         var refreshToken = new RefreshToken
@@ -125,7 +144,9 @@ public sealed class AuthController(
             return Unauthorized();
         }
         
-        TokenRequest tokenRequest = new TokenRequest(refreshToken.User.Id, refreshToken.User.Email!);
+        IList<string> roles = await userManager.GetRolesAsync(refreshToken.User);
+        
+        TokenRequest tokenRequest = new TokenRequest(refreshToken.User.Id, refreshToken.User.Email!, roles);
         AccessTokensDto accessTokens = tokenProvider.Create(tokenRequest);
 
         refreshToken.Token = accessTokens.RefreshToken;

@@ -20,7 +20,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
     await app.ApplyMigrations();
+    await app.SeedInitialDataAsync();
 }
+
+
 
 app.UseHttpsRedirection();
 
